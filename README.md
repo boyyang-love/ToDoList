@@ -23,34 +23,36 @@
 
 ### 代码下载以及使用
 
-+ 代码地址仓库地址()
++ 代码地址仓库地址(https://github.com/boyyang-love/ToDoList)
 
+#### 安装依赖
 
-
-## Project setup
-
-``` bush
+```bush
 yarn install
 ```
+#### 或者npm
+```bush
+npm install
+```
 
-## Compiles and hot-reloads for development
+#### 运行项目
 
-``` bush
+```bush
 yarn serve
 ```
 
-## Compiles and minifies for production
+#### 或者npm
 
-``` bush
+```bush
+npm run serve
+```
+#### 项目打包
+
+```bush
 yarn build
 ```
+#### 或者npm
 
-## Lints and fixes files
-
-``` bush
-yarn lint
+```bush
+npm run build
 ```
-
-### Customize configuration
-
-See [Configuration Reference](https://cli.vuejs.org/config/).
