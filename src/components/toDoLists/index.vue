@@ -6,7 +6,7 @@
     </div>
     <div class="lists">
       <ul>
-        <li v-for="(item, i) in lists" :key="i">
+        <li v-for="(item, i) in lists" :key="i" class="animated bounceInRight">
           <span class="number" @click="editor(i)">{{i+1}}</span>
           <span :class=" ['willDo', item.checked == true ? 'checked': ''] ">{{item.content}}</span>
           <span class="check">
@@ -15,6 +15,13 @@
           <span class="iconfont icon-cuo" @click="del(i)"></span>
         </li>
       </ul>
+    </div>
+    <div class="alertBox" v-show="isShow">
+      <input type="text" v-model="afterValue" />
+      <div class="submit">
+        <span class="iconfont icon-bianji" @click="change"></span>
+        <span class="iconfont icon-nb-" @click="exit"></span>
+      </div>
     </div>
   </div>
 </template>
@@ -38,14 +45,17 @@ export default {
           checked: true
         }
       ],
-      plans: ""
+      plans: "",
+      changeId: "",
+      afterValue: "",
+      isShow: false
     });
     // 添加待做事件
     let addPlans = () => {
       if (state.plans == "") {
         alert("输入不能为空");
       } else {
-        state.lists.unshift({ content: state.plans, checked: false });
+        state.lists.push({ content: state.plans, checked: false });
         localStorage.setItem("ToDoList", JSON.stringify(state.lists));
         state.plans = "";
       }
@@ -63,7 +73,9 @@ export default {
     };
     // 编辑事件
     let editor = i => {
-      console.log(i);
+      state.afterValue = state.lists[i].content;
+      state.changeId = i;
+      state.isShow = true;
     };
     // 本地存储事件
     onMounted(async () => {
@@ -72,12 +84,26 @@ export default {
         state.lists = await JSON.parse(lists);
       }
     });
+    // 编辑确定事件
+    let change = () => {
+      console.log(state.changeId);
+      state.lists[state.changeId].content = state.afterValue;
+      localStorage.setItem("ToDoList", JSON.stringify(state.lists));
+      state.isShow = false;
+    };
+    // 退出编辑事件
+    let exit = () => {
+      state.isShow = false;
+    };
+
     return {
       ...toRefs(state),
       addPlans,
       checked,
       del,
-      editor
+      editor,
+      change,
+      exit
     };
   }
 };
@@ -201,12 +227,52 @@ export default {
       }
     }
   }
+  .alertBox {
+    position: fixed;
+    top: 200px;
+    width: 50%;
+    height: 125px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 5px;
+    background-color: white;
+    box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.4);
+    input {
+      width: 95%;
+      height: 45px;
+      background-color: #a4e2c6;
+      border: none;
+      outline: none;
+      box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.5);
+      margin: 5px;
+    }
+    .submit {
+      width: 95%;
+      height: 45px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .iconfont {
+        font-size: 30px;
+        color: sandybrown;
+        cursor: pointer;
+        box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.5);
+        border-radius: 3px;
+      }
+      .iconfont:hover {
+        color: #ff2d51;
+      }
+    }
+  }
 }
 
 @media screen and (max-width: 900px) {
   .todolists {
     width: 100%;
     height: 100%;
+    overflow-y: auto;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -246,7 +312,42 @@ export default {
       width: 90%;
       ul {
         list-style: none;
-        li {
+      }
+    }
+    .alertBox {
+      width: 90%;
+      height: 125px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      border-radius: 5px;
+      background-color: white;
+      box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.4);
+      input {
+        width: 95%;
+        height: 45px;
+        background-color: #a4e2c6;
+        border: none;
+        outline: none;
+        box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.5);
+        margin: 5px;
+      }
+      .submit {
+        width: 95%;
+        height: 45px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .iconfont {
+          font-size: 30px;
+          color: sandybrown;
+          cursor: pointer;
+          box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.5);
+          border-radius: 3px;
+        }
+        .iconfont:hover {
+          color: #ff2d51;
         }
       }
     }
