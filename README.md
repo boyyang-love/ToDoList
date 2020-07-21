@@ -20,6 +20,12 @@
  + vue-router
  + vue-cli
  + webStorage
+ 
+### css样式用的事less预处理
+
+```bush
+yarn add less-loader
+```
 
 ### 代码下载以及使用
 
